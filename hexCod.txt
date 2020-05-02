@@ -1,0 +1,9 @@
+vermelho = 0xFFFF0004
+preto = 0xFF000000
+branco = 0xFFFFFFFF
+player = 0xFF0026FF
+bullet = 0xFFFFD800
+arm = 0xFFFF6A00
+enemy = 0xFFFF7063
+
+C:\xampp\php

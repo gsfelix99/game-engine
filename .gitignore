@@ -9,7 +9,12 @@
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
+<<<<<<< HEAD
 
+=======
+.idea/
+out/
+>>>>>>> c28e8be... Inital Commit
 # Package Files #
 *.jar
 *.war
@@ -20,4 +25,8 @@
 *.rar
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+<<<<<<< HEAD
 hs_err_pid*
+=======
+hs_err_pid*
+>>>>>>> c28e8be... Inital Commit
