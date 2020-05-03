@@ -2,7 +2,7 @@ package program.main;
 
 //import com.sun.tools.javac.util.List;
 import program.entities.*;
-import program.graficos.Spritesheet;
+import program.graficos.*;
 import program.world.World;
 
 import javax.swing.*;
@@ -42,6 +42,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public static Player player;
     public static Random random;
+    public UI ui;
 
     public Game() {
         random = new Random();
@@ -50,6 +51,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         initFrame();
 
         // Initialization object's
+        ui = new UI();
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         entities = new ArrayList<Entity>();
         enemies = new ArrayList<Enemy>();
@@ -111,12 +113,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
         g.setColor(new Color(19,19,19));
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
+        //      Render the Gmae
 //        Graphics2D g2 = (Graphics2D) g;
         world.render(g);
         for (int i = 0; i < entities.size(); i++){
             Entity e = entities.get(i);
             e.render(g);
         }
+        ui.render(g);
 
         g.dispose();
         g = bs.getDrawGraphics();
