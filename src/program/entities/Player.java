@@ -86,8 +86,8 @@ public class Player extends Entity {
          *  and update the life in case of damage
          */
 
-        for (int i = 0; i < Game.entities.size(); i++) { // Scrolls through the list of entities
-            Entity atual = Game.entities.get(i); // Current entity in position "i"
+        for (int i = 0; i < Game.lifepackList.size(); i++) { // Scrolls through the list of entities
+            Entity atual = Game.lifepackList.get(i); // Current entity in position "i"
             if (atual instanceof Lifepack) { // // is the current entity a life pack ?
                 if (Entity.isColidding(this, atual)) {
                     life += 10;
