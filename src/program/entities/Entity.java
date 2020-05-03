@@ -21,6 +21,7 @@ public class Entity {
 
 
     private BufferedImage sprite;
+    private int maskx, masky, maskWidth, maskHeight;
 
     public Entity(int x, int y, int width, int height, BufferedImage sprite) {
         this.x = x;
@@ -28,6 +29,18 @@ public class Entity {
         this.width = width;
         this.height = height;
         this.sprite = sprite;
+
+        this.maskx = 0;
+        this.masky = 0;
+        this.maskWidth = width;
+        this.maskHeight = height;
+    }
+
+    public void setMask(int maskx, int masky, int maskWidth, int maskHeight) {
+        this.maskx = maskx;
+        this.masky = masky;
+        this.maskWidth = maskWidth;
+        this.maskHeight = maskHeight;
     }
 
     public void setX(int x) {
@@ -63,11 +76,22 @@ public class Entity {
         return height;
     }
 
-    public void render(Graphics g) {
-        g.drawImage(sprite, this.getX() - Camera.x, this.getY() - Camera.y, null);
+
+    public static boolean isColidding(Entity e1, Entity e2) {
+        Rectangle e1Mask = new Rectangle(e1.getX() + e1.maskx, e1.getY() + e1.masky, e1.maskWidth, e1.maskHeight);
+        Rectangle e2Mask = new Rectangle(e2.getX() + e2.maskx, e2.getY() + e2.masky, e2.maskWidth, e2.maskHeight);
+
+        return e1Mask.intersects(e2Mask);
     }
 
     public void tick() {
 
     }
+    public void render(Graphics g) {
+        g.drawImage(sprite, this.getX() - Camera.x, this.getY() - Camera.y, null);
+//        g.setColor(Color.red);
+//        g.fillRect(this.getX() + maskx - Camera.x, this.getY() + masky - Camera.y, maskWidth, maskHeight);
+    }
+
+
 }

@@ -23,34 +23,54 @@ public class Enemy extends Entity {
     }
 
     public void tick() {
-        if (this.isColiddingWithPlayer() == false) {
+        if (this.isColiddingWithPlayer() == false) { // is a Player ?
+
             if (((int) x < Game.player.getX()) &&
                     World.isFree((int) (x + speed), this.getY()) &&
                     !isColidding((int) (x + speed), this.getY())) {
-
+                /**
+                 * The current position is less than the player's position,
+                 * the next x positions are free and it doesn't have a
+                 * collision with an entity in the next position x, so:
+                 */
                 x += speed;
 
             } else if ((int) x > Game.player.getX() &&
                     World.isFree((int) (x - speed), this.getY()) &&
                     !isColidding((int) (x - speed), this.getY())) {
-
+                /**
+                 * The current position is greater than the player's position,
+                 * the next x positions are free and it doesn't have a
+                 * collision with an entity in the next position x, so:
+                 */
                 x -= speed;
             }
 
             if (((int) y < Game.player.getY()) &&
                     World.isFree(this.getX(), (int) (y + speed)) &&
                     !isColidding(this.getX(), (int) (y + speed))) {
-
+                /**
+                 * The current position is less than the player's position,
+                 * the next y positions are free and it doesn't have a
+                 * collision with an entity in the next position x, so:
+                 */
                 y += speed;
 
             } else if (((int) y > Game.player.getY()) &&
                     World.isFree(this.getX(), (int) (y - speed)) &&
                     !isColidding(this.getX(), (int) (y - speed))) {
+                /**
+                 * The current position is grater than the player's position,
+                 * the next x positions are free and it doesn't have a
+                 * collision with an entity in the next position x, so:
+                 */
                 y -= speed;
             }
         } else {
             if (Game.random.nextInt(100) < 10) {
-
+                /**
+                 * Player damage: Random damage in the range 0 to 5
+                 */
                 Game.player.life -= Game.random.nextInt(5);
                 System.out.println(Game.player.life);
 
@@ -67,9 +87,13 @@ public class Enemy extends Entity {
             if (index > maxIndex) index = 0;
         }
 
-    }
+    } // End of tick()
 
     public boolean isColiddingWithPlayer() {
+        /**
+         * Create a mask over the enemies
+         * and the player to test the collision
+         */
         Rectangle enemyCurrent = new Rectangle(this.getX() + maskx, this.getY() + masky, maskWidth, maskHeight);
         Rectangle player = new Rectangle(Game.player.getX(), Game.player.getY(), 16, 16);
         return enemyCurrent.intersects(player);
@@ -79,7 +103,7 @@ public class Enemy extends Entity {
         Rectangle enemyCurrent = new Rectangle(xnext + maskx, ynext + masky, maskWidth, maskHeight);
         for (int i = 0; i < Game.enemies.size(); i++) {
             Enemy enemy = Game.enemies.get(i);
-            if (enemy == this)
+            if (enemy == this) //
                 continue;
             Rectangle targetEnemy = new Rectangle(enemy.getX() + maskx, enemy.getY() +masky, maskWidth, maskHeight);
             if (enemyCurrent.intersects(targetEnemy))

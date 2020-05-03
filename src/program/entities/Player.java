@@ -65,7 +65,8 @@ public class Player extends Entity {
             }
         }
 
-        Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, (World.WIDTH*16) - Game.WIDTH);
+        checkCollisionLifePack();
+        Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, (World.WIDTH*16) - Game.WIDTH); //
         Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT / 2), 0, (World.HIGHT*16) - Game.HEIGHT);
 
     }
@@ -78,4 +79,24 @@ public class Player extends Entity {
             g.drawImage(leftPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
         }
     }
+
+    public void checkCollisionLifePack() {
+        /**
+         *  This function check the collision with life pack
+         *  and update the life in case of damage
+         */
+
+        for (int i = 0; i < Game.entities.size(); i++) { // Scrolls through the list of entities
+            Entity atual = Game.entities.get(i); // Current entity in position "i"
+            if (atual instanceof Lifepack) { // // is the current entity a life pack ?
+                if (Entity.isColidding(this, atual)) {
+                    life += 10;
+                    if (life > 100)
+                        life = 100;
+                    Game.entities.remove(atual);
+                }
+            }
+        }
+    }
+
 }
