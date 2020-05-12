@@ -3,12 +3,15 @@ package program.main;
 //import com.sun.tools.javac.util.List;
 import program.entities.*;
 import program.graficos.*;
+import program.world.Camera;
 import program.world.World;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -22,7 +25,7 @@ import java.util.Random;
  * Danki Code: Desenvolvimento de Jogos
  * */
 
-public class Game extends Canvas implements Runnable, KeyListener {
+public class Game extends Canvas implements Runnable, KeyListener, MouseListener {
 
     public static JFrame frame;
     private Thread thread;
@@ -36,7 +39,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public static List<Entity> entities;
     public static List<Lifepack> lifepackList;
+    public static List<Bullet> bulletList;
     public static List<Enemy> enemies;
+    public static List<Weapon> weaponList;
+    public static List<BulletShoot> bulletShoots;
+
     public static Spritesheet spritesheet;
 
     public static World world;
@@ -48,6 +55,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public Game() {
         random = new Random();
         addKeyListener(this);
+        addMouseListener(this);
+
         setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
         initFrame();
 
@@ -59,6 +68,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
         entities = new ArrayList<Entity>();
         enemies = new ArrayList<Enemy>();
         lifepackList = new ArrayList<Lifepack>();
+        bulletList = new ArrayList<Bullet>();
+        weaponList = new ArrayList<Weapon>();
+        bulletShoots = new ArrayList<BulletShoot>();
 
         spritesheet = new Spritesheet("/spritesheet.png");
 
@@ -106,6 +118,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
             Entity e = entities.get(i);
             e.tick();
         }
+
+        for (int i = 0; i < bulletShoots.size(); i++) {
+            bulletShoots.get(i).tick();
+        }
     }
 
     public void render() {
@@ -125,11 +141,19 @@ public class Game extends Canvas implements Runnable, KeyListener {
             Entity e = entities.get(i);
             e.render(g);
         }
+
+        for (int i = 0; i < bulletShoots.size(); i++) {
+            bulletShoots.get(i).render(g);
+        }
+
         ui.render(g);
 
         g.dispose();
         g = bs.getDrawGraphics();
         g.drawImage(image, 0,0, WIDTH*SCALE, HEIGHT*SCALE, null);
+        g.setFont(new Font("arial", Font.BOLD, 20));
+        g.setColor(Color.magenta);
+        g.drawString("Munição: " + player.ammunition, 600,20);
         bs.show();
     }
 
@@ -193,6 +217,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
             player.down = true;
         }
 
+        if (e.getKeyCode() == KeyEvent.VK_G) {
+            player.shoot = true;
+        }
+
     }
 
     @Override
@@ -218,5 +246,37 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
             player.down = false;
         }
+
+//        if (e.getKeyCode() == KeyEvent.VK_G) {
+//            player.shoot = false;
+//        }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        player.mouseShoot = true;
+        player.mx = (e.getX()/SCALE); //+ Camera.x;
+        player.my = (e.getY()/SCALE); //+ Camera.y;
+//        System.out.println(player.mx);
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }

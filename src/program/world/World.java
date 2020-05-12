@@ -64,11 +64,16 @@ public class World {
 
                     } else if ( pixelAtual ==  0xFFFF6A00 ) {
                         //Arm
-                        Game.entities.add(new Weapon(xx*16, yy*16,16,16, Entity.WEAPON_EN));
+                        Weapon weapon = new Weapon(xx*16, yy*16,16,16, Entity.WEAPON_EN);
+                        Game.entities.add(weapon);
+                        Game.weaponList.add(weapon);
+
 
                     } else if ( pixelAtual == 0xFFFFD800) {
                         //Bullet
-                        Game.entities.add(new Bullet(xx*16, yy*16,16,16, Entity.BULLET_EN));
+                        Bullet bullet = new Bullet(xx*16, yy*16,16,16, Entity.BULLET_EN);
+                        Game.entities.add(bullet);
+                        Game.bulletList.add(bullet);
 
                     }
                 }

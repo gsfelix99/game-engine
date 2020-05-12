@@ -72,10 +72,9 @@ public class Enemy extends Entity {
                  * Player damage: Random damage in the range 0 to 5
                  */
                 Game.player.life -= Game.random.nextInt(5);
+                Game.player.isDamage = true;
                 System.out.println(Game.player.life);
 
-                if (Game.player.life <= 0)
-                    System.exit(1);
             }
 
         }
