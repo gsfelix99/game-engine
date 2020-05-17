@@ -3,12 +3,14 @@ package program.world;
 import program.entities.*;
 import program.main.Game;
 
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+/**
+ * This class is responsible for
+ */
 public class World {
 
     private static Tile[] tiles;

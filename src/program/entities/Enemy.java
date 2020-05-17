@@ -14,6 +14,7 @@ public class Enemy extends Entity {
     private int maskx = 4, masky = 4, maskWidth = 6, maskHeight = 6;
     private int frames = 0, maxFrames = 15, index = 0, maxIndex = 1;
     private BufferedImage[] spritesEnemy;
+    private int life = 10;
 
     public Enemy(int x, int y, int width, int height, BufferedImage sprite) {
         super(x, y, width, height, null);
@@ -23,47 +24,29 @@ public class Enemy extends Entity {
     }
 
     public void tick() {
-        if (this.isColiddingWithPlayer() == false) { // is a Player ?
+        if (this.isColiddingWithPlayer() == false) {
 
             if (((int) x < Game.player.getX()) &&
                     World.isFree((int) (x + speed), this.getY()) &&
                     !isColidding((int) (x + speed), this.getY())) {
-                /**
-                 * The current position is less than the player's position,
-                 * the next x positions are free and it doesn't have a
-                 * collision with an entity in the next position x, so:
-                 */
+
                 x += speed;
 
             } else if ((int) x > Game.player.getX() &&
                     World.isFree((int) (x - speed), this.getY()) &&
                     !isColidding((int) (x - speed), this.getY())) {
-                /**
-                 * The current position is greater than the player's position,
-                 * the next x positions are free and it doesn't have a
-                 * collision with an entity in the next position x, so:
-                 */
                 x -= speed;
             }
 
             if (((int) y < Game.player.getY()) &&
                     World.isFree(this.getX(), (int) (y + speed)) &&
                     !isColidding(this.getX(), (int) (y + speed))) {
-                /**
-                 * The current position is less than the player's position,
-                 * the next y positions are free and it doesn't have a
-                 * collision with an entity in the next position x, so:
-                 */
+
                 y += speed;
 
             } else if (((int) y > Game.player.getY()) &&
                     World.isFree(this.getX(), (int) (y - speed)) &&
                     !isColidding(this.getX(), (int) (y - speed))) {
-                /**
-                 * The current position is grater than the player's position,
-                 * the next x positions are free and it doesn't have a
-                 * collision with an entity in the next position x, so:
-                 */
                 y -= speed;
             }
         } else {
@@ -85,8 +68,22 @@ public class Enemy extends Entity {
             index ++;
             if (index > maxIndex) index = 0;
         }
+        
+        collidingBullet();
 
     } // End of tick()
+
+    private boolean collidingBullet() {
+        for (int i = 0; i < Game.entities.size(); i++) {
+            Entity e = Game.entities.get(i);
+            if (e instanceof BulletShoot) {
+                if (Entity.isColidding(this, e)) {
+
+                }
+            }
+        }
+        return false;
+    }
 
     public boolean isColiddingWithPlayer() {
         /**
