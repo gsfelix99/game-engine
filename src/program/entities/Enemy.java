@@ -15,6 +15,8 @@ public class Enemy extends Entity {
     private int frames = 0, maxFrames = 15, index = 0, maxIndex = 1;
     private BufferedImage[] spritesEnemy;
     private int life = 10;
+    private boolean isDamage = false;
+    private int damageFrames = 10, damageCurrent = 0;
 
     public Enemy(int x, int y, int width, int height, BufferedImage sprite) {
         super(x, y, width, height, null);
@@ -70,19 +72,38 @@ public class Enemy extends Entity {
         }
         
         collidingBullet();
+        if (life <= 0) {
+            destroySelf();
+            return;
+        }
+        if (isDamage) {
+            this.damageCurrent ++;
+            if (this.damageCurrent == this.damageFrames) {
+                this.damageCurrent = 0;
+                this.isDamage = false;
+            }
+        }
 
     } // End of tick()
 
-    private boolean collidingBullet() {
-        for (int i = 0; i < Game.entities.size(); i++) {
-            Entity e = Game.entities.get(i);
+    private void destroySelf() {
+        Game.entities.remove(this);
+        Game.enemies.remove(this);
+    }
+
+    private void collidingBullet() {
+        for (int i = 0; i < Game.bulletShoots.size(); i++) {
+            Entity e = Game.bulletShoots.get(i);
             if (e instanceof BulletShoot) {
                 if (Entity.isColidding(this, e)) {
-
+                    isDamage = true;
+                    life--;
+                    Game.bulletShoots.remove(i);
+//                    System.out.println("aaa");
+                    return;
                 }
             }
         }
-        return false;
     }
 
     public boolean isColiddingWithPlayer() {
@@ -110,6 +131,10 @@ public class Enemy extends Entity {
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(spritesEnemy[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+        if (!isDamage)
+            g.drawImage(spritesEnemy[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+        else
+            g.drawImage(Entity.ENEMY_FEEDBACK, this.getX() - Camera.x, this.getY() - Camera.y, null);
+
     }
 }
